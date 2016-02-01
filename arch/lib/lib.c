@@ -127,6 +127,12 @@ FORWARDER4(lib_sys_file_write, nvoid, int, const struct SimSysFile *,
 
 struct SimKernel *g_kernel;
 
+/**
+ * Initialize everything
+ *
+ * @exported Kernel functions DCE should be able to call
+ * @imported DCE callbacks that kernel can call
+ */
 void lib_init(struct SimExported *exported, const struct SimImported *imported,
 	      struct SimKernel *kernel)
 {
