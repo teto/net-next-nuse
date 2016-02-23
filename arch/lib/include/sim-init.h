@@ -9,6 +9,8 @@
 #define SIM_INIT_H
 
 #include <linux/socket.h>
+#include <linux/types.h>
+//#include <linux/clocksource.h>
 #include "sim-types.h"
 
 #ifdef __cplusplus
@@ -72,6 +74,9 @@ struct SimExported {
 			const char *buffer, int size, int offset);
 };
 
+/******************************************
+ * DCE functions called by this kernel
+ */
 struct SimImported {
 	int (*vprintf)(struct SimKernel *kernel, const char *str,
 		va_list args);
@@ -120,6 +125,8 @@ struct SimImported {
 	void (*signal_raised)(struct SimKernel *kernel, struct SimTask *task,
 			int sig);
 	void (*poll_event)(int flag, void *context);
+	//
+	cycle_t (*read_clock)(void);
 };
 
 typedef void (*SimInit)(struct SimExported *, const struct SimImported *,

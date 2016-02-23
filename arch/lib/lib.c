@@ -15,6 +15,8 @@
 #include <drivers/base/base.h>
 #include <linux/idr.h>
 #include <linux/rcupdate.h>
+#include <linux/types.h> /* to add clock */
+#include <linux/clocksource.h> /* to add clock */
 #include "sim-init.h"
 #include "sim.h"
 
@@ -127,6 +129,39 @@ FORWARDER4(lib_sys_file_write, nvoid, int, const struct SimSysFile *,
 
 struct SimKernel *g_kernel;
 
+
+//cycle_t simtsc;
+//#define FRAC_BITS 16
+//u64 simtsc_frac;
+
+/* cycle_t = u64 cf bottom http://lxr.free-electrons.com/source/include/linux/types.h#L233 */
+cycle_t simclocksource_read(struct clocksource *cs) {
+	return g_imported.read_clock();
+}
+
+
+/*********************************************
+* MATT: 
+*********************************************/
+
+struct clocksource simclocksource = {
+	.name                   = "dce",
+	.rating                 = 400,  /* 500 is perfect */
+	.read 			= simclocksource_read,
+	.mask                   = CLOCKSOURCE_MASK(64),
+	/* TODO nope in principle it is not !! */
+	.flags                  = CLOCK_SOURCE_IS_CONTINUOUS |
+				  CLOCK_SOURCE_MUST_VERIFY,
+};
+
+
+/*
+struct clocksource * clocksource_default_clock(void) {
+	return &simclocksource;
+}*/
+
+
+
 /**
  * Initialize everything
  *
@@ -196,6 +231,12 @@ void lib_init(struct SimExported *exported, const struct SimImported *imported,
 		call++;
 	} while (call < __initcall_end);
 
+	/* MATT clock  is install in timekeeping_init() just before */
+	pr_warn("test MATT\n");
+	// Register our own clock source
+	__clocksource_register(&simclocksource);
+	/* MATT end */
+	
 	/* finally, put the system in RUNNING state. */
 	system_state = SYSTEM_RUNNING;
 }
