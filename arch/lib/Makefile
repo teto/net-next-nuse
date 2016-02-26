@@ -56,7 +56,8 @@ CFLAGS_USPACE= \
  -fno-inline -fno-strict-aliasing -fno-common \
  -fno-delete-null-pointer-checks -fno-builtin \
  -fno-stack-protector -Wno-unused -Wno-pointer-sign \
- $(PIC_CFLAGS) -D_DEBUG $(cov_$(COV)) -I$(ARCH_DIR)/include
+ $(PIC_CFLAGS) -D_DEBUG $(cov_$(COV)) -I$(ARCH_DIR)/include  \
+ -I/home/teto/libos/include
 
 CFLAGS+= \
  $(CFLAGS_USPACE) -nostdinc -D__KERNEL__ -iwithprefix $(srctree)/include \
@@ -197,7 +198,9 @@ quiet_cmd_builtin = BUILTIN   $@
 %.o:%.c $(AUTOGENS)
 	$(call if_changed_dep,cc)
 
-library: $(KERNEL_LIB) $(LIBOS_TOOLS)
+library: $(KERNEL_LIB) 
+# MATT : I disabled nuise compilation
+#$(LIBOS_TOOLS)
 modules: $(modules)
 
 $(LIBOS_TOOLS): $(KERNEL_LIB) Makefile FORCE
