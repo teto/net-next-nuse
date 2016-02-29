@@ -41,6 +41,8 @@ struct itimerval {
 	struct timeval it_value;	/* current value */
 };
 
+uint64_t ns_to_jiffies(uint64_t ns);
+
 /*
  * The IDs of the various system clocks (for POSIX.1b interval timers):
  */

@@ -19,6 +19,7 @@
 #include <linux/clocksource.h> /* to add clock */
 #include "sim-init.h"
 #include "sim.h"
+//#include "uapi/linux/time.h"
 
 enum system_states system_state = SYSTEM_BOOTING;
 /* glues */
@@ -134,16 +135,25 @@ struct SimKernel *g_kernel;
 //#define FRAC_BITS 16
 //u64 simtsc_frac;
 
-/* cycle_t = u64 cf bottom http://lxr.free-electrons.com/source/include/linux/types.h#L233 */
-cycle_t simclocksource_read(struct clocksource *cs) {
-	return g_imported.read_clock();
+/* 
+cycle_t = u64 cf bottom http://lxr.free-electrons.com/source/include/linux/types.h#L233 
+wallclock
+
+*/
+cycle_t simclocksource_read(struct clocksource *cs) 
+{
+	// conversion should be ok
+	printk("simclocksource_read\n");
+	uint64_t ns = g_imported.current_ns(g_kernel); 
+	
+//	return (cycle_t) ns_to_jiffies(ns);
+	return (cycle_t) ns;
 }
 
 
 /*********************************************
-* MATT: 
+* MATT:  when is it called ?
 *********************************************/
-
 struct clocksource simclocksource = {
 	.name                   = "dce",
 	.rating                 = 400,  /* 500 is perfect */
@@ -235,6 +245,7 @@ void lib_init(struct SimExported *exported, const struct SimImported *imported,
 	pr_warn("test MATT\n");
 	// Register our own clock source
 	__clocksource_register(&simclocksource);
+// could we use clocksource_mmio_init instead ?(
 	/* MATT end */
 	
 	/* finally, put the system in RUNNING state. */

@@ -125,8 +125,10 @@ struct SimImported {
 	void (*signal_raised)(struct SimKernel *kernel, struct SimTask *task,
 			int sig);
 	void (*poll_event)(int flag, void *context);
-	//
-	cycle_t (*read_clock)(void);
+	/**
+	 * used as clocksource.read function
+	 */
+	uint64_t (*read_clock)(void);
 };
 
 typedef void (*SimInit)(struct SimExported *, const struct SimImported *,
