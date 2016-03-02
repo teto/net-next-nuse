@@ -139,6 +139,11 @@ struct SimKernel *g_kernel;
 cycle_t = u64 cf bottom http://lxr.free-electrons.com/source/include/linux/types.h#L233 
 wallclock
 
+This whole lcock stuff is inspired by 
+cf linux-tktests/tk_test.c de miroslav
+Look at tk_core in timekeeping.c to see the structure maintained by adjtime etc...
+
+
 */
 cycle_t simclocksource_read(struct clocksource *cs) 
 {
@@ -161,7 +166,9 @@ struct clocksource simclocksource = {
 	.mask                   = CLOCKSOURCE_MASK(64),
 	/* TODO nope in principle it is not !! */
 	.flags                  = CLOCK_SOURCE_IS_CONTINUOUS |
-				  CLOCK_SOURCE_MUST_VERIFY,
+				  CLOCK_SOURCE_MUST_VERIFY
+//				  | CLOCK_SOURCE_RESELECT
+				  ,
 };
 
 
@@ -245,6 +252,7 @@ void lib_init(struct SimExported *exported, const struct SimImported *imported,
 	pr_warn("test MATT\n");
 	// Register our own clock source
 	__clocksource_register(&simclocksource);
+//	clocksource_select();
 // could we use clocksource_mmio_init instead ?(
 	/* MATT end */
 	

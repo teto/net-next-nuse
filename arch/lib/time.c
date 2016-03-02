@@ -33,6 +33,8 @@ void lib_update_jiffies(void)
 	uint64_t ns = lib_current_ns();
 	jiffies = ns_to_jiffies(ns);
 	jiffies_64 = ns_to_jiffies(ns);
+    pr_warn("call to lib_update_jiffies");
+//    update_wall_time();
 }
 
 /* copied from kernel/time/hrtimeer.c */
