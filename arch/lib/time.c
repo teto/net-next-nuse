@@ -22,6 +22,10 @@ seqlock_t xtime_lock;
    We don't call the latter so we should never access this variable. */
 struct timespec wall_to_monotonic;
 
+/* HZ= 100 
+ * do_div defined in asm/div64.h
+ * do_div(n, base)
+ */
 uint64_t ns_to_jiffies(uint64_t ns)
 {
 	do_div(ns, (1000000000 / HZ));
@@ -33,8 +37,11 @@ void lib_update_jiffies(void)
 	uint64_t ns = lib_current_ns();
 	jiffies = ns_to_jiffies(ns);
 	jiffies_64 = ns_to_jiffies(ns);
-    pr_warn("call to lib_update_jiffies");
+    
+    // or call xtime_update()
+    // plain
 //    update_wall_time();
+    pr_warn("call to lib_update_jiffies %lu\n", jiffies);
 }
 
 /* copied from kernel/time/hrtimeer.c */

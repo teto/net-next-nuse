@@ -149,6 +149,7 @@ cycle_t simclocksource_read(struct clocksource *cs)
 {
 	// conversion should be ok
 	printk("simclocksource_read\n");
+	//lib_current_ns
 	uint64_t ns = g_imported.current_ns(g_kernel); 
 	
 //	return (cycle_t) ns_to_jiffies(ns);
@@ -249,9 +250,13 @@ void lib_init(struct SimExported *exported, const struct SimImported *imported,
 	} while (call < __initcall_end);
 
 	/* MATT clock  is install in timekeeping_init() just before */
-	pr_warn("test MATT\n");
+	
 	// Register our own clock source
-	__clocksource_register(&simclocksource);
+//	__clocksource_register(&simclocksource);
+	if(clocksource_register_hz(&simclocksource, 1)){
+        panic("failed to register clocksource");
+	}
+	pr_warn("test MATT\n");
 //	clocksource_select();
 // could we use clocksource_mmio_init instead ?(
 	/* MATT end */
