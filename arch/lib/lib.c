@@ -17,6 +17,7 @@
 #include <linux/rcupdate.h>
 #include <linux/types.h> /* to add clock */
 #include <linux/clocksource.h> /* to add clock */
+#include <linux/timex.h>
 #include "sim-init.h"
 #include "sim.h"
 //#include "uapi/linux/time.h"
@@ -224,7 +225,10 @@ void lib_init(struct SimExported *exported, const struct SimImported *imported,
 	exported->sys_iterate_files = lib_sys_iterate_files_forwarder;
 	exported->sys_file_write = lib_sys_file_write_forwarder;
 	exported->sys_file_read = lib_sys_file_read_forwarder;
-
+    
+//    exported->adjtime = 
+    exported->adjtimex = &do_adjtimex;
+//    exported->update_wall_time = 
 	pr_notice("%s", linux_banner);
 
 	rcu_init();

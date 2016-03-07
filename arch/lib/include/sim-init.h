@@ -10,6 +10,7 @@
 
 #include <linux/socket.h>
 #include <linux/types.h>
+//#include <linux/timex.h>
 //#include <linux/clocksource.h>
 #include "sim-types.h"
 
@@ -72,6 +73,9 @@ struct SimExported {
 			int size, int offset);
 	int (*sys_file_write)(const struct SimSysFile *file,
 			const char *buffer, int size, int offset);
+//	int (*adjtime)(const struct timeval *delta, struct timeval *olddelta);
+   // struct timex*
+	int (*adjtimex)( void *);
 };
 
 /******************************************
@@ -129,6 +133,7 @@ struct SimImported {
 	 * used as clocksource.read function
 	 */
 	uint64_t (*read_clock)(void);
+
 };
 
 typedef void (*SimInit)(struct SimExported *, const struct SimImported *,

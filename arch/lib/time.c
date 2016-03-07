@@ -39,7 +39,7 @@ void lib_update_jiffies(void)
 	jiffies_64 = ns_to_jiffies(ns);
     
     // or call xtime_update()
-    // plain
+    // TODO hopefully it should work with onlyupdate_wall_time
 //    update_wall_time();
     pr_warn("call to lib_update_jiffies %lu\n", jiffies);
 }
