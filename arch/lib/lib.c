@@ -228,6 +228,7 @@ void lib_init(struct SimExported *exported, const struct SimImported *imported,
     
 //    exported->adjtime = 
     exported->adjtimex = &do_adjtimex;
+    exported->gettimeofday = &do_gettimeofday;
 //    exported->update_wall_time = 
 	pr_notice("%s", linux_banner);
 

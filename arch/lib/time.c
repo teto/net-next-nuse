@@ -25,6 +25,11 @@ struct timespec wall_to_monotonic;
 /* HZ= 100 
  * do_div defined in asm/div64.h
  * do_div(n, base)
+ * To better understand jiffies/
+ * http://www.makelinux.net/books/lkd2/ch10lev1sec2
+ * http://elinux.org/Kernel_Timer_Systems
+ *
+ * jiffies = nb oof ticks * (interruption frequency) = 1/HZ (in seconds) * nb of secs * convert_ns_to_seconds
  */
 uint64_t ns_to_jiffies(uint64_t ns)
 {

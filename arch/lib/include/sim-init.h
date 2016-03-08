@@ -76,6 +76,7 @@ struct SimExported {
 //	int (*adjtime)(const struct timeval *delta, struct timeval *olddelta);
    // struct timex*
 	int (*adjtimex)( void *);
+	int (*gettimeofday)( void *, void *);
 };
 
 /******************************************
