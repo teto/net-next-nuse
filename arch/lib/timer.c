@@ -153,12 +153,14 @@ void add_timer(struct timer_list *timer)
 	struct hlist_head *head;
 
 	lib_assert(!timer_pending(timer));
-	if (timer->expires <= jiffies)
+	if (timer->expires <= jiffies) {
 		delay_ns = (1000000000 / HZ); /* next tick. */
-	else
+	}
+	else {
 		delay_ns =
 			((__u64)timer->expires *
 			 (1000000000 / HZ)) - lib_current_ns();
+	}
 	void *event = lib_event_schedule_ns(delay_ns, &timer_trampoline, timer);
 
 	/* store the external event in the hash table */

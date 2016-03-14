@@ -30,9 +30,15 @@ struct timespec wall_to_monotonic;
  * http://elinux.org/Kernel_Timer_Systems
  *
  * jiffies = nb oof ticks * (interruption frequency) = 1/HZ (in seconds) * nb of secs * convert_ns_to_seconds
+  
+  deja defini dans http://lxr.free-electrons.com/source/include/linux/jiffies.h
+  nsecs_to_jiffies64
+  http://lxr.free-electrons.com/source/kernel/time/time.c#L711
+  
  */
 uint64_t ns_to_jiffies(uint64_t ns)
 {
+    // TODO use NSEC_PER_SEC
 	do_div(ns, (1000000000 / HZ));
 	return ns;
 }
